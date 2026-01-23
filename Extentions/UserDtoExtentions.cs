@@ -12,7 +12,7 @@ namespace API.Extentions
             {
                 Id = user.Id,
                 DisplayName = user.DisplayName,
-                Token = serviceToken.creatToken(user),
+                Token = serviceToken.CreateToken(user),
                 Email = user.Email
             };
         }

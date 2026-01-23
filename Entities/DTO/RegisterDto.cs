@@ -6,12 +6,16 @@ namespace API.Entities.DTO
     public class RegisterDto
     {
         [Required]
-        public string userName { get; set; }
+        [StringLength(50, MinimumLength = 3)]
+        public required string UserName { get; set; }
+
         [EmailAddress]
         [Required]
-        public string email { get; set; }
+        [StringLength(255)]
+        public required string Email { get; set; }
 
         [Required]
-        public string password { get; set; }
+        [StringLength(100, MinimumLength = 8)]
+        public required string Password { get; set; }
     }
 }
