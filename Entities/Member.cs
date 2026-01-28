@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
+using System.Text.Json.Serialization;
 
 namespace API.Entities
 {
@@ -27,14 +28,17 @@ namespace API.Entities
 
         public required string Country { get; set; }
 
-
+        [JsonIgnore]
         public List<Photo> Photos { get; set; } = [];
 
 
 
         // navgation prop
 
+        [JsonIgnore]
         public string AppUserId { get; set; }
+
+        [JsonIgnore]
         public AppUser AppUser { get; set; } = null!;       
 
 

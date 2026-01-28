@@ -10,14 +10,10 @@ using System.Text;
 
 namespace API.Controllers
 {
-    /// <summary>
-    /// Handles user authentication and registration.
-    /// </summary>
+    
     public class AccountController(DatingContext context, IServiceToken serviceToken) : BaseApiController
     {
-        /// <summary>
-        /// Registers a new user account.
-        /// </summary>
+       
         [HttpPost("Register")]
         public async Task<ActionResult<UserDto>> Register(RegisterDto register)
         {
@@ -40,35 +36,31 @@ namespace API.Controllers
             return Ok(user.ToUserDto(serviceToken));
         }
 
-        /// <summary>
-        /// Authenticates a user and returns a JWT token.
-        /// </summary>
+      
         [HttpPost("Login")]
         public async Task<ActionResult<UserDto>> Login(LoginDto login)
         {
             var user = await context.Users
-                .SingleOrDefaultAsync(u => u.Email.ToLower() == login.Email.ToLower());
+                .FirstOrDefaultAsync(u => u.Email.ToLower() == login.Email.ToLower());
 
             if (user == null)
                 return Unauthorized("Invalid email or password");
 
-            // Verify password using HMAC
+           
             using var hmac = new HMACSHA512(user.PasswordSalt);
             var computedHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(login.Password));
 
-            // Compare hashes byte by byte
+            
             for (int i = 0; i < computedHash.Length; i++)
             {
-                if (computedHash[i] != user.PasswordHash[i])
+                if (!computedHash.SequenceEqual(user.PasswordHash))
                     return Unauthorized("Invalid email or password");
             }
 
             return Ok(user.ToUserDto(serviceToken));
         }
 
-        /// <summary>
-        /// Checks if an email address is already registered.
-        /// </summary>
+    
         private async Task<bool> CheckEmailExists(string email)
         {
             return await context.Users.AnyAsync(u => u.Email.ToLower() == email.ToLower());

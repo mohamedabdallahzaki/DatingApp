@@ -1,4 +1,5 @@
 using API.Data;
+using API.Data.Repository;
 using API.Interface;
 using API.Middleware;
 using API.Services;
@@ -20,6 +21,8 @@ builder.Services.AddDbContext<DatingContext>(options =>
 {
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
 });
+
+builder.Services.AddScoped<IMemberRepository, MemberRepository>();
 
 // Configure JWT Authentication
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
