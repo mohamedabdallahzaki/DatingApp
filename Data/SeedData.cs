@@ -28,16 +28,12 @@ namespace API.Data
             using var hmac = new HMACSHA512();
                 var user = new AppUser
                 {
-                    Id = Guid.NewGuid().ToString(),
+                    Id = member.Id,
                     DisplayName = member.DisplayName,
                     ImageUrl = member.ImageUrl,
                     Email = member.Email,
                     PasswordHash = hmac.ComputeHash(Encoding.UTF8.GetBytes("pa$$w0rd")),
                     PasswordSalt = hmac.Key,
-                    
-
-                    
-
                 };
 
                 var newMember = new Member
@@ -48,7 +44,7 @@ namespace API.Data
                     DisplayName = member.DisplayName,
                     CreateAt = member.Created,
                     LastActive = member.LastActive,
-                    DateOfBrith = member.DateOfBrith,
+                    DateOfBirth = member.DateOfBirth,
                     Gender = member.Gender,
                     Description = member.Description,
                     ImageUrl = member.ImageUrl,

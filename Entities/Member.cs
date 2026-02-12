@@ -7,7 +7,7 @@ namespace API.Entities
     {
         public string Id { get; set; } = null!;
 
-        public DateOnly DateOfBrith { get; set; }
+        public DateOnly DateOfBirth { get; set; }
 
         public required string DisplayName { get; set;  }
 

@@ -25,6 +25,15 @@ namespace API.Data.Repository
                      .FirstOrDefaultAsync(m => m.Id == Id) ?? null! ;
 
         }
+
+        public async Task<Member?> GetMemberForUpdate(string id)
+        {
+            return await context.Members
+                .Include(m => m.AppUser)
+                .Include(m => m.Photos)
+                .SingleOrDefaultAsync(m => m.Id == id);
+        }
+
         public async Task<bool> SaveAllAsync()
         {
             return await  context.SaveChangesAsync() > 0;

@@ -33,6 +33,8 @@ namespace API.Controllers
             await context.Users.AddAsync(user);
             await context.SaveChangesAsync();
 
+           
+
             return Ok(user.ToUserDto(serviceToken));
         }
 

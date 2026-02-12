@@ -6,7 +6,7 @@
 
         public required string Email { get; set; }
 
-        public DateOnly DateOfBrith { get; set; }
+        public DateOnly DateOfBirth { get; set; }
 
         public required string DisplayName { get; set; }
 

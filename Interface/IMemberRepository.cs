@@ -13,7 +13,7 @@ namespace API.Interface
 
         Task<bool> SaveAllAsync();
 
-
+        Task<Member?> GetMemberForUpdate(string id);
 
     }
 }

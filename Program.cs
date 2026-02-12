@@ -3,6 +3,7 @@ using API.Data.Repository;
 using API.Interface;
 using API.Middleware;
 using API.Services;
+using API.Settings;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -21,8 +22,10 @@ builder.Services.AddDbContext<DatingContext>(options =>
 {
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
 });
-
+builder.Services.AddScoped<IPhotoService, PhotoService>();
 builder.Services.AddScoped<IMemberRepository, MemberRepository>();
+builder.Services.Configure<CloudinarySettings>(builder.Configuration.GetSection("CloudinarySettings"));
+builder.Services.AddScoped<IServiceToken, ServiceToken>();
 
 // Configure JWT Authentication
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
@@ -53,7 +56,6 @@ builder.Services.AddCors(options =>
         policy.AllowAnyMethod();
     });
 });
-builder.Services.AddScoped<IServiceToken, ServiceToken>();
 
 var app = builder.Build();
 
@@ -66,10 +68,9 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 app.UseCors("AllowOrigin");
-//app.UseMiddleware<ExpectionsMiddleware>();
+app.UseMiddleware<ExpectionsMiddleware>();
 app.UseAuthentication();
 app.UseAuthorization();
-
 app.MapControllers();
 
  using var scope = app.Services.CreateScope();
