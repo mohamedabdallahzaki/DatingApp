@@ -23,6 +23,11 @@ namespace API.Data
                     .IsUnique()
                     .HasDatabaseName("IX_Users_Email");
 
+                entity.HasOne(u => u.Member)
+                    .WithOne(m => m.AppUser)
+                    .HasForeignKey<Member>(m => m.Id)
+                    .OnDelete(DeleteBehavior.Cascade);
+
                 // Configure Email as required with max length
                 entity.Property(e => e.Email)
                     .IsRequired()

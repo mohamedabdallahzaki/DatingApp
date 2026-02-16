@@ -5,7 +5,7 @@ namespace API.Entities
 {
     public class Member
     {
-        public string Id { get; set; } = null!;
+        public string Id { get; set; } 
 
         public DateOnly DateOfBirth { get; set; }
 
@@ -34,9 +34,6 @@ namespace API.Entities
 
 
         // navgation prop
-
-        [JsonIgnore]
-        public string AppUserId { get; set; }
 
         [JsonIgnore]
         public AppUser AppUser { get; set; } = null!;       

@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace API.Migrations
 {
     [DbContext(typeof(DatingContext))]
-    [Migration("20260131135438_Init")]
-    partial class Init
+    [Migration("20260216182827_init")]
+    partial class init
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -65,10 +65,6 @@ namespace API.Migrations
                     b.Property<string>("Id")
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<string>("AppUserId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
                     b.Property<string>("City")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -101,9 +97,6 @@ namespace API.Migrations
                         .HasColumnType("datetime2");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("AppUserId")
-                        .IsUnique();
 
                     b.ToTable("Members");
                 });
@@ -138,7 +131,7 @@ namespace API.Migrations
                 {
                     b.HasOne("API.Entities.AppUser", "AppUser")
                         .WithOne("Member")
-                        .HasForeignKey("API.Entities.Member", "AppUserId")
+                        .HasForeignKey("API.Entities.Member", "Id")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 

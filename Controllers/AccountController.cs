@@ -24,10 +24,20 @@ namespace API.Controllers
 
             var user = new AppUser
             {
+                
                 Email = register.Email.ToLower(),
-                DisplayName = register.UserName,
+                DisplayName = register.DisplayName,
                 PasswordHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(register.Password)),
-                PasswordSalt = hmac.Key
+                PasswordSalt = hmac.Key,
+                Member= new Member
+                {
+                    City = register.City,
+                    Country = register.Country,
+                    DateOfBirth = register.DateOfBirth,
+                    Gender = register.Gender,
+                   DisplayName = register.DisplayName,
+
+                }
             };
 
             await context.Users.AddAsync(user);

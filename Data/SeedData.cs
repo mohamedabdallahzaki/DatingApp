@@ -48,7 +48,7 @@ namespace API.Data
                     Gender = member.Gender,
                     Description = member.Description,
                     ImageUrl = member.ImageUrl,
-                    AppUserId = user.Id
+            
 
                 };
                 user.Member = newMember;

@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace API.Migrations
 {
     /// <inheritdoc />
-    public partial class Init : Migration
+    public partial class init : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -40,15 +40,14 @@ namespace API.Migrations
                     Gender = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     City = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Country = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    AppUserId = table.Column<string>(type: "nvarchar(450)", nullable: false)
+                    Country = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Members", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Members_Users_AppUserId",
-                        column: x => x.AppUserId,
+                        name: "FK_Members_Users_Id",
+                        column: x => x.Id,
                         principalTable: "Users",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
@@ -74,12 +73,6 @@ namespace API.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Members_AppUserId",
-                table: "Members",
-                column: "AppUserId",
-                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_Photos_MemberId",

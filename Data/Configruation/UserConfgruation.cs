@@ -4,13 +4,13 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace API.Data.Configruation
 {
-    public class UserConfgruation : IEntityTypeConfiguration<Member>
+    public class UserConfgruation : IEntityTypeConfiguration<AppUser>
     {
-        public void Configure(EntityTypeBuilder<Member> builder)
+        public void Configure(EntityTypeBuilder<AppUser> builder)
         {
-            builder.HasOne(u => u.AppUser)
-        .WithOne(m => m.Member)
-        .HasForeignKey<Member>(m => m.AppUser.Id)
+         builder.HasOne(u => u.Member)
+        .WithOne(m => m.AppUser)
+        .HasForeignKey<Member>(m => m.Id)
         .OnDelete(DeleteBehavior.Cascade);
         }
     }
