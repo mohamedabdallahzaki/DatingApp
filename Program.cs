@@ -31,7 +31,7 @@ builder.Services.AddScoped<IServiceToken, ServiceToken>();
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>
     {
-        var key = builder.Configuration["TokenKey"] 
+        var key = builder.Configuration["TokenKey:Key"] 
             ?? throw new InvalidOperationException("TokenKey not found in configuration. Please set it in User Secrets.");
 
         options.TokenValidationParameters = new TokenValidationParameters
