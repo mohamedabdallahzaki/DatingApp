@@ -6,9 +6,29 @@ namespace API.Data.Repository
 {
     public class MemberRepository(DatingContext context) : IMemberRepository
     {
-        public async Task<IReadOnlyList<Member>> GetAllMembersAsync()
+        public async Task<PaginatedResult<Member>> GetAllMembersAsync(MemberParams _params)
         {
-            return await context.Members.ToListAsync();
+            var query = context.Members.AsQueryable();
+
+           query = query.Where(m => m.Id != _params.currentMemberId);
+
+            if (!string.IsNullOrEmpty(_params.Gender))
+            {
+                query = query.Where(m => m.Gender == _params.Gender);
+            }
+
+            var minDob = DateOnly.FromDateTime(DateTime.Today.AddYears(-_params.maxAge));
+            var maxDob = DateOnly.FromDateTime(DateTime.Today.AddYears(-_params.minAge));
+
+            query = query.Where(m => m.DateOfBirth >= minDob && m.DateOfBirth <= maxDob);
+
+            query = _params.OrderBy switch
+            {
+                "created" => query.OrderByDescending(m => m.CreateAt),
+                _ => query.OrderByDescending(m => m.LastActive)
+            };
+
+            return  await paginatedHelper.CreateAsync(query, _params.PageNumber, _params.PageSize);
         }
 
         public async Task<IReadOnlyList<Photo>> GetAllPhotosAsync(string id)

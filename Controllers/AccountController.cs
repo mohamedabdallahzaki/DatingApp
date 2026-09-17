@@ -3,6 +3,7 @@ using API.Entities;
 using API.Entities.DTO;
 using API.Extensions;
 using API.Interface;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Security.Cryptography;
@@ -10,7 +11,7 @@ using System.Text;
 
 namespace API.Controllers
 {
-    
+    [AllowAnonymous]
     public class AccountController(DatingContext context, IServiceToken serviceToken) : BaseApiController
     {
        
@@ -62,12 +63,10 @@ namespace API.Controllers
             using var hmac = new HMACSHA512(user.PasswordSalt);
             var computedHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(login.Password));
 
-            
-            for (int i = 0; i < computedHash.Length; i++)
-            {
+      
                 if (!computedHash.SequenceEqual(user.PasswordHash))
                     return Unauthorized("Invalid email or password");
-            }
+            
 
             return Ok(user.ToUserDto(serviceToken));
         }

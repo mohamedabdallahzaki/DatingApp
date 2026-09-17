@@ -4,9 +4,7 @@ using API.Interface;
 
 namespace API.Extensions
 {
-    /// <summary>
-    /// Extension methods for converting AppUser entities to DTOs.
-    /// </summary>
+   
     public static class UserDtoExtensions
     {
         

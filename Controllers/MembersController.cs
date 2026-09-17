@@ -18,11 +18,17 @@ namespace API.Controllers
     {
 
         [HttpGet]
-        public async Task<ActionResult<IReadOnlyList<Member>>> GetAllMembers()
+        public async Task<ActionResult<PaginatedResult<Member>>> GetAllMembers(
+            [FromQuery] MemberParams paginatedParams)
         {
+            var id = User.FindFirstValue(ClaimTypes.NameIdentifier);
 
+            if (id == null) return BadRequest("Opus , Not Found Id for this member");
 
-            return Ok(await _memberRepository.GetAllMembersAsync());
+            paginatedParams.currentMemberId = id;
+
+            var members = await _memberRepository.GetAllMembersAsync(paginatedParams);
+            return Ok(members);
         }
 
 
@@ -30,10 +36,8 @@ namespace API.Controllers
         public async Task<ActionResult<Member>> GetMemberById(string id)
         {
             var user = await _memberRepository.GetMemberByIdAsync(id);
-
             if (user == null)
                 return NotFound();
-
             return Ok(user);
         }
 
@@ -55,9 +59,7 @@ namespace API.Controllers
             var id = User.FindFirstValue(ClaimTypes.NameIdentifier);
             if (id == null) return BadRequest("Opus , Not Found Id for this member");
             var member = await _memberRepository.GetMemberForUpdate(id);
-
             if (member == null) return BadRequest("Not Found Member ");
-
             member.Description = updateMebmer.Description ?? member.Description;
             member.City = updateMebmer.City ?? member.City;
             member.Country = updateMebmer.Country ?? member.Country;

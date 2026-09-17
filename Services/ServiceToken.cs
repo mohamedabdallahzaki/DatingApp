@@ -9,14 +9,10 @@ namespace API.Services
 {
     public class ServiceToken(IConfiguration configuration) : IServiceToken
     {
-        /// <summary>
-        /// Creates a JWT token for the specified user.
-        /// </summary>
-        /// <param name="user">The user to create a token for.</param>
-        /// <returns>A JWT token string.</returns>
+     
         public string CreateToken(AppUser user)
         {
-            var key = configuration["TokenKey"] ?? throw new Exception("Cannot find TokenKey in configuration");
+            var key = configuration["TokenKey:Key"] ?? throw new Exception("Cannot find TokenKey in configuration");
 
             // HMACSHA512 requires minimum 64 bytes (128 hex characters)
             if (key.Length < 64) throw new Exception("TokenKey must be at least 64 characters long");

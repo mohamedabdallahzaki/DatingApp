@@ -1,4 +1,5 @@
-﻿using API.Entities;
+﻿using API.Data.Configruation;
+using API.Entities;
 using Microsoft.EntityFrameworkCore;
 
 namespace API.Data
@@ -14,6 +15,8 @@ namespace API.Data
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
+
+            modelBuilder.ApplyConfigurationsFromAssembly(typeof(UserConfgruation).Assembly); 
 
             // Configure AppUser entity
             modelBuilder.Entity<AppUser>(entity =>

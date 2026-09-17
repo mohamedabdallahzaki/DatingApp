@@ -26,6 +26,7 @@ namespace API.Middleware
             try
             {
                 await _requestDelegate.Invoke(context);
+                
             }
             catch(Exception ex)
             {
