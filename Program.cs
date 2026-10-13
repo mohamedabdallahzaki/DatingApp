@@ -1,5 +1,6 @@
 using API.Data;
 using API.Data.Repository;
+using API.Extensions;
 using API.Interface;
 using API.Middleware;
 using API.Services;
@@ -15,7 +16,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 
 // Configure OpenAPI/Swagger
-builder.Services.AddOpenApi();
+//builder.Services.AddOpenApi();
 
 // Configure Database
 builder.Services.AddDbContext<DatingContext>(options =>
@@ -24,8 +25,10 @@ builder.Services.AddDbContext<DatingContext>(options =>
 });
 builder.Services.AddScoped<IPhotoService, PhotoService>();
 builder.Services.AddScoped<IMemberRepository, MemberRepository>();
+builder.Services.AddScoped<IMemberLikeRepository, MemberLikeRepository>();
 builder.Services.Configure<CloudinarySettings>(builder.Configuration.GetSection("CloudinarySettings"));
 builder.Services.AddScoped<IServiceToken, ServiceToken>();
+builder.Services.AddScoped<LogUserActivity>();
 
 // Configure JWT Authentication
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
@@ -63,7 +66,7 @@ var app = builder.Build();
 if (app.Environment.IsDevelopment())
 {
     app.UseDeveloperExceptionPage();
-    app.MapOpenApi();
+    //app.MapOpenApi();
 }
 
 app.UseHttpsRedirection();

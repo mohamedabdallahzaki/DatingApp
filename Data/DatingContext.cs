@@ -13,11 +13,13 @@ namespace API.Data
 
         public DbSet<Photo> Photos { get; set; }
 
+        public DbSet<MemberLike> likes { get; set; }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
 
-            modelBuilder.ApplyConfigurationsFromAssembly(typeof(UserConfgruation).Assembly); 
+            modelBuilder.ApplyConfigurationsFromAssembly(typeof(UserConfgruation).Assembly);
 
             // Configure AppUser entity
             modelBuilder.Entity<AppUser>(entity =>
@@ -43,6 +45,22 @@ namespace API.Data
                     .HasMaxLength(100);
             });
 
+            modelBuilder.Entity<MemberLike>()
+                .HasKey(k => new { k.SourceMemberId, k.TargetMemberId });
+
+
+            modelBuilder.Entity<MemberLike>()
+                .HasOne(s => s.SourceMember)
+                .WithMany(t => t.LikedMember)
+                .HasForeignKey(s => s.SourceMemberId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<MemberLike>()
+                .HasOne(l => l.TargetMember)
+                .WithMany(u => u.LikedByMember)
+                .HasForeignKey(l => l.TargetMemberId)
+                .OnDelete(DeleteBehavior.NoAction);
+
             var dataTimeConverter = new ValueConverter<DateTime, DateTime>(
                 v => v.ToUniversalTime(),
                 v => DateTime.SpecifyKind(v, DateTimeKind.Utc));
@@ -58,5 +76,6 @@ namespace API.Data
                 }
 
             }
+        }
     }
 }

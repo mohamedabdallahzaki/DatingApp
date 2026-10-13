@@ -31,8 +31,10 @@ namespace API.Entities
         [JsonIgnore]
         public List<Photo> Photos { get; set; } = [];
 
-
-
+        [JsonIgnore]
+        public List<MemberLike> LikedByMember { get; set; } = [];
+        [JsonIgnore]
+        public List<MemberLike> LikedMember { get; set; } = [];
         // navgation prop
 
         [JsonIgnore]
